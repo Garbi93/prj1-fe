@@ -23,6 +23,10 @@ export function BoardList() {
       .then((response) => setBoardList(response.data));
   }, []);
 
+  if (boardList === null) {
+    return <Spinner />;
+  }
+
   return (
     <Box>
       <h1>게시물 목록</h1>
@@ -37,10 +41,7 @@ export function BoardList() {
             </Tr>
           </Thead>
           <Tbody>
-            {boardList === null ? (
-              <Spinner />
-            ) : (
-              boardList &&
+            {boardList &&
               boardList.map((board) => (
                 <Tr
                   _hover={{ cursor: "pointer" }}
@@ -52,8 +53,7 @@ export function BoardList() {
                   <Td>{board.writer}</Td>
                   <Td>{board.inserted}</Td>
                 </Tr>
-              ))
-            )}
+              ))}
           </Tbody>
         </Table>
       </Box>
