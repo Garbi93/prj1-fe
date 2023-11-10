@@ -14,6 +14,7 @@ import axios from "axios";
 export function BoardEdit() {
   const [board, updateBoard] = useImmer(null);
 
+
   // /edit/:id
   const { id } = useParams();
 
@@ -32,7 +33,7 @@ export function BoardEdit() {
       <h1>{id}번 글 수정</h1>
       <FormControl>
         <FormLabel>제목</FormLabel>
-        <Input value={board.title} />
+        <Input value={board.title} updateBoard={}/>
       </FormControl>
       <FormControl>
         <FormLabel>본문</FormLabel>
