@@ -62,7 +62,6 @@ export function BoardEdit() {
               draft.writer = e.target.value;
             });
           }}
-        {/*  내용 수정*/}
         />
       </FormControl>
       <Button colorScheme="blue">저장</Button>
