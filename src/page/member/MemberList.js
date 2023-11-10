@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Box, Spinner, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Spinner,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import axios from "axios";
 
 export function MemberList() {
