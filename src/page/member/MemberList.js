@@ -30,6 +30,7 @@ export function MemberList() {
             <Th>id</Th>
             <Th>password</Th>
             <Th>email</Th>
+            <Th>inserted</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -38,6 +39,7 @@ export function MemberList() {
               <Td>{member.id}</Td>
               <Td>{member.password}</Td>
               <Td>{member.email}</Td>
+              <Td>{member.inserted}</Td>
             </Tr>
           ))}
         </Tbody>
