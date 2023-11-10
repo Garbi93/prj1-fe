@@ -27,11 +27,11 @@ export function BoardEdit() {
     return <Spinner />;
   }
 
-  function handleTitleChange(e) {
+  const handleTitleChange = (e) => {
     updateBoard((draft) => {
       draft.title = e.target.value;
     });
-  }
+  };
 
   function handleContentChange(e) {
     updateBoard((draft) => {
@@ -52,7 +52,14 @@ export function BoardEdit() {
       </FormControl>
       <FormControl>
         <FormLabel>작성자</FormLabel>
-        <Input value={board.writer} />
+        <Input
+          value={board.writer}
+          onChange={(e) => {
+            updateBoard((draft) => {
+              draft.writer = e.target.value;
+            });
+          }}
+        />
       </FormControl>
     </Box>
   );
