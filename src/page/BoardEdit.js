@@ -63,6 +63,7 @@ export function BoardEdit() {
             });
           }}
         />
+        {/*  */}
       </FormControl>
       <Button colorScheme="blue">저장</Button>
       {/* navigete (-1) : 이전 경로로 이동 */}
