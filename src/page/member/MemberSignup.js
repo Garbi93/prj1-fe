@@ -6,6 +6,8 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
@@ -18,13 +20,19 @@ export function MemberSignup() {
 
   const [idAvailable, setIdAvailable] = useState(false);
 
+  const toast = useToast();
+
   let submitAvailable = true;
 
   if (!idAvailable) {
     submitAvailable = false;
   }
 
-  if (password != passwordCheck) {
+  if ((idAvailable = id === "")) {
+    submitAvailable = false;
+  }
+
+  if (password !== passwordCheck) {
     submitAvailable = false;
   }
 
@@ -52,10 +60,18 @@ export function MemberSignup() {
       .get("/api/member/check?" + searchParam.toString())
       .then(() => {
         setIdAvailable(false);
+        toast({
+          description: "해당 id는 이미 존재 합니다.",
+          status: "error",
+        });
       })
       .catch((error) => {
         if (error.response.status === 404) {
           setIdAvailable(true);
+          toast({
+            description: "해당 id 사용이 가능 합니다.",
+            status: "success",
+          });
         }
       });
   }
@@ -87,7 +103,7 @@ export function MemberSignup() {
 
         <FormErrorMessage>암호를 입력해 주세요.</FormErrorMessage>
       </FormControl>
-      <FormControl isInvalid={password != passwordCheck}>
+      <FormControl isInvalid={password !== passwordCheck}>
         <FormLabel>password 확인</FormLabel>
         <Input
           type="password"
