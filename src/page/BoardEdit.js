@@ -4,8 +4,17 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
   Textarea,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +23,8 @@ import axios from "axios";
 
 export function BoardEdit() {
   const [board, updateBoard] = useImmer(null);
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navigate = useNavigate();
 
@@ -48,7 +59,13 @@ export function BoardEdit() {
     // board
     axios
       .put("/api/board/edit", board)
-      .then(() => console.log("잘 됨"))
+      .then(() => {
+        console.log("잘 됨");
+        toast({
+          description: "저장이 잘 되었습니다.",
+          status: "success",
+        });
+      })
       .catch(() => console.log("잘 안됨"))
       .finally(() => console.log("끝"));
   }
@@ -75,9 +92,38 @@ export function BoardEdit() {
           }}
         />
       </FormControl>
-      <Button colorScheme="blue" onClick={handleSubmit}>
-        저장
-      </Button>
+      <Box>
+        <Button
+          colorScheme="blue"
+          onClick={() => {
+            onOpen();
+            handleSubmit();
+            toast();
+          }}
+        >
+          저장
+        </Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{id}번 내용을 수정 할 예정 입니다.</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <h4>수정된 내용은</h4>
+              <p>제 목 : {board.title}</p>
+              <p>내 용 : {board.content}</p>
+              <p>작성자 : {board.writer}</p>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button>저장</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Box>
       {/* navigete (-1) : 이전 경로로 이동 */}
       <Button onClick={() => navigate(-1)}>취소</Button>
     </Box>
