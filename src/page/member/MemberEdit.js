@@ -50,8 +50,8 @@ export function MemberEdit() {
   if (password.length === 0) {
     passwordChecked = true;
   }
-  console.log(password, passwordCheck);
-  console.log(passwordChecked, emailChecked);
+  // console.log(password, passwordCheck);
+  // console.log(passwordChecked, emailChecked);
   if (member === null) {
     return <Spinner />;
   }
