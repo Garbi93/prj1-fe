@@ -26,8 +26,12 @@ export function MemberEdit() {
   const [member, setMember] = useState(null);
   const [email, setEmail] = useState("");
   const [emailAvailable, setEmailAvailable] = useState(false);
+
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
+
+  const [nickName, setNickName] = useState("");
+
   const toast = useToast();
 
   const navigate = useNavigate();
@@ -38,6 +42,7 @@ export function MemberEdit() {
     axios.get("/api/member?" + params.toString()).then((response) => {
       setMember(response.data);
       setEmail(response.data.email);
+      setNickName(response.data.nickName);
     });
   }, []);
 
@@ -68,6 +73,7 @@ export function MemberEdit() {
     return <Spinner />;
   }
 
+  // 이메일 중복확인 버튼 누를 시 이메일들의 중복 확인 function
   function handleEmailCheck() {
     const params = new URLSearchParams();
     params.set("email", email);
@@ -95,7 +101,7 @@ export function MemberEdit() {
     // put /api/member/edit
     // {id, password, email}
     axios
-      .put("/api/member/edit", { id: member.id, password, email })
+      .put("/api/member/edit", { id: member.id, password, email, nickName })
       .then(() => {
         toast({
           description: "회원 정보가 수정되었습니다.",
@@ -161,6 +167,14 @@ export function MemberEdit() {
             중복확인
           </Button>
         </Flex>
+      </FormControl>
+      <FormControl>
+        <FormLabel>nickName</FormLabel>
+        <Input
+          type="nickName"
+          value={nickName}
+          onChange={(e) => setNickName(e.target.value)}
+        />
       </FormControl>
       <Button
         isDisabled={!emailChecked || !passwordChecked}

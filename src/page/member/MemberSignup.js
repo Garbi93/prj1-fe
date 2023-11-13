@@ -17,7 +17,9 @@ export function MemberSignup() {
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [email, setEmail] = useState("");
+  const [nickName, setNickName] = useState("");
   const [emailAvailable, setEmailAvailable] = useState(false);
+  const [nickNameAvailable, setNickNameAvailable] = useState(false);
 
   const toast = useToast();
 
@@ -31,11 +33,15 @@ export function MemberSignup() {
     submitAvailable = false;
   }
 
+  if (!nickNameAvailable) {
+    submitAvailable = false;
+  }
+
   if (!idAvailable) {
     submitAvailable = false;
   }
 
-  if (password != passwordCheck) {
+  if (password !== passwordCheck) {
     submitAvailable = false;
   }
 
@@ -49,6 +55,7 @@ export function MemberSignup() {
         id,
         password,
         email,
+        nickName,
       })
       .then(() => {
         toast({
@@ -103,7 +110,7 @@ export function MemberSignup() {
     axios
       .get("/api/member/check?" + params)
       .then(() => {
-        setEmailAvailable(false);
+        setNickNameAvailable(false);
         toast({
           description: "이미 사용중인 email 입니다.",
           status: "warning",
@@ -111,9 +118,32 @@ export function MemberSignup() {
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          setEmailAvailable(true);
+          setNickNameAvailable(true);
           toast({
             description: "사용 가능한 email 입니다.",
+            status: "success",
+          });
+        }
+      });
+  }
+
+  function handleNickNameClick() {
+    const params = new URLSearchParams();
+    params.set("nickName", nickName);
+    axios
+      .get("/api/member/check?" + params)
+      .then(() => {
+        setEmailAvailable(false);
+        toast({
+          description: "이미 사용중인 nickName 입니다.",
+          status: "warning",
+        });
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          setEmailAvailable(true);
+          toast({
+            description: "사용 가능한 nickName 입니다.",
             status: "success",
           });
         }
@@ -147,7 +177,7 @@ export function MemberSignup() {
 
         <FormErrorMessage>암호를 입력해 주세요.</FormErrorMessage>
       </FormControl>
-      <FormControl isInvalid={password != passwordCheck}>
+      <FormControl isInvalid={password !== passwordCheck}>
         <FormLabel>password 확인</FormLabel>
         <Input
           type="password"
@@ -170,6 +200,18 @@ export function MemberSignup() {
           <Button onClick={handleEmailCheck}>중복체크</Button>
         </Flex>
         <FormErrorMessage>email 중복 체크를 해주세요.</FormErrorMessage>
+      </FormControl>
+      <FormControl isInvalid={nickName.length === 0}>
+        <FormLabel>nickName</FormLabel>
+        <Flex>
+          <Input
+            type="nickName"
+            value={nickName}
+            onChange={(e) => setNickName(e.target.value)}
+          />
+          <Button onClick={handleNickNameClick}>중복체크</Button>
+        </Flex>
+        <FormErrorMessage>닉네임을 입력해 주세요</FormErrorMessage>
       </FormControl>
       <Button
         isDisabled={!submitAvailable}
