@@ -2,18 +2,18 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spinner,
+  Input,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -25,6 +25,7 @@ export function MemberView() {
   const [params] = useSearchParams();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
+
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -41,16 +42,20 @@ export function MemberView() {
   function handleDelete() {
     // axios
     // delete /api/member?id=userid
+    // ok -> home 이동, toast 띄우기
+    // error -> toast 띄우기
+    // finally -> modal 닫기
+
     axios
       .delete("/api/member?" + params.toString())
       .then(() => {
         toast({
-          description: "회원 탈퇴 하였습니다.",
+          description: "회원 탈퇴하였습니다.",
           status: "success",
         });
         navigate("/");
 
-        // TODO : 로그 아웃 기능 추가하기
+        // TODO : 로그아웃 기능 추가하기
       })
       .catch((error) => {
         if (error.response.status === 401 || error.response.status === 403) {
@@ -58,17 +63,14 @@ export function MemberView() {
             description: "권한이 없습니다.",
             status: "error",
           });
-        } else
+        } else {
           toast({
-            description: "탈퇴 처리 중에 문제가 발생하였습니다",
+            description: "탈퇴 처리 중에 문제가 발생하였습니다.",
             status: "error",
           });
+        }
       })
-      .finally(() => onClose);
-
-    // ok -> home 으로 이동. 성공 toast 띄우기
-    //error -> 실패 toast 띄우기
-    // finally -> modal 닫기
+      .finally(() => onClose());
   }
 
   return (
@@ -77,6 +79,10 @@ export function MemberView() {
       <FormControl>
         <FormLabel>password</FormLabel>
         <Input type="text" value={member.password} readOnly />
+      </FormControl>
+      <FormControl>
+        <FormLabel>별명</FormLabel>
+        <Input value={member.nickName}></Input>
       </FormControl>
       <FormControl>
         <FormLabel>email</FormLabel>
