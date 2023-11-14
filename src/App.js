@@ -52,13 +52,21 @@ function App(props) {
     return login !== "";
   }
 
+  // admin 인지 확인 하는 function
+  function isAdmin() {
+    if (login.auth) {
+      return login.auth.some((elem) => elem.name === "admin");
+    }
+    return false;
+  }
+
   function hasAccess(useId) {
     return login.id === useId;
   }
 
   return (
     <LoginContext.Provider
-      value={{ login, fetchLogin, isAuthenticated, hasAccess }}
+      value={{ login, fetchLogin, isAuthenticated, hasAccess, isAdmin }}
     >
       <RouterProvider router={routes} />
     </LoginContext.Provider>
