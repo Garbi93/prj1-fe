@@ -52,8 +52,14 @@ function App(props) {
     return login !== "";
   }
 
+  function hasAccess(useId) {
+    return login.id === useId;
+  }
+
   return (
-    <LoginContext.Provider value={{ login, fetchLogin, isAuthenticated }}>
+    <LoginContext.Provider
+      value={{ login, fetchLogin, isAuthenticated, hasAccess }}
+    >
       <RouterProvider router={routes} />;
     </LoginContext.Provider>
   );
