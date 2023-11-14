@@ -60,7 +60,7 @@ function App(props) {
     <LoginContext.Provider
       value={{ login, fetchLogin, isAuthenticated, hasAccess }}
     >
-      <RouterProvider router={routes} />;
+      <RouterProvider router={routes} />
     </LoginContext.Provider>
   );
 }
