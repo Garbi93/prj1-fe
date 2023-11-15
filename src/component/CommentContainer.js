@@ -32,18 +32,7 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
   );
 }
 
-function CommentList({ boardId }) {
-  const [commentList, setCommentList] = useState([]);
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-    params.set("id", boardId);
-
-    axios
-      .get("/api/comment/list?" + params) // 자바스크립트에서 피연산자가 String 타입이어서 params에 toString() 을 안 붙여도 String 타입으로 더해진다.
-      .then((response) => setCommentList(response.data));
-  }, []);
-
+function CommentList({ commentList }) {
   return (
     <Card>
       <CardHeader>
@@ -51,7 +40,6 @@ function CommentList({ boardId }) {
       </CardHeader>
       <CardBody>
         <Stack divider={<StackDivider />} spacing="4">
-          {/* TODO : 새로운 줄 출력 */}
           {commentList.map((comment) => (
             <Box>
               <Flex justifyContent="space-between">
@@ -72,6 +60,19 @@ function CommentList({ boardId }) {
 export function CommentContainer({ boardId }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [commentList, setCommentList] = useState([]);
+
+  useEffect(() => {
+    if (!isSubmitting) {
+      const params = new URLSearchParams();
+      params.set("id", boardId);
+
+      axios
+        .get("/api/comment/list?" + params) // 자바스크립트에서 피연산자가 String 타입이어서 params에 toString() 을 안 붙여도 String 타입으로 더해진다.
+        .then((response) => setCommentList(response.data));
+    }
+  }, [isSubmitting]);
+
   function handleSubmit(comment) {
     setIsSubmitting(true);
 
@@ -87,7 +88,7 @@ export function CommentContainer({ boardId }) {
         isSubmitting={isSubmitting}
         onSubmit={handleSubmit}
       />
-      <CommentList boardId={boardId} />
+      <CommentList boardId={boardId} commentList={commentList} />
     </Box>
   );
 }
