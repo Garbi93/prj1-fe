@@ -1,4 +1,12 @@
-import { Box, Button, Input, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Spinner,
+  Textarea,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -35,7 +43,11 @@ function CommentList({ boardId }) {
       .then((response) => setCommentList(response.data));
   }, []);
 
-  return <Box>댓글 리스트</Box>;
+  return (
+    <Box>
+      <p>{commentList.map((e) => console.log(e.nickName))}</p>
+    </Box>
+  );
 }
 
 export function CommentContainer({ boardId }) {
