@@ -31,7 +31,7 @@ function CommentList({ boardId }) {
     params.set("id", boardId);
 
     axios
-      .get("/api/comment/list?" + params)
+      .get("/api/comment/list?" + params) // 자바스크립트에서 피연산자가 String 타입이어서 params에 toString() 을 안 붙여도 String 타입으로 더해진다.
       .then((response) => setCommentList(response.data));
   }, []);
 
