@@ -36,7 +36,7 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
 function CommentList({ commentList }) {
   function handleDelete(id) {
     // console.log(id + "댓글삭제");
-    // TODO : then, fetch, finally
+    // TODO : 모달, 삭제후 리스트 업데이트, then, fetch, finally
     axios.delete("/api/comment/" + id);
   }
 
