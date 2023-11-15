@@ -11,20 +11,28 @@ import {
   StackDivider,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-function CommentForm({ boardId, isSubmitting, onSubmit }) {
-  const [comment, setComment] = useState("");
-
+function CommentForm({ boardId, isSubmitting, onSubmit, setCommentChange }) {
   function handleSubmit() {
     onSubmit({ boardId, comment });
   }
 
+  function handleSetComment() {
+    setCommentChange({});
+  }
+
   return (
     <Box>
-      <Textarea value={comment} onChange={(e) => setComment(e.target.value)} />
+      <Textarea
+        value={comment}
+        // onChange={(e) => setComment(e.target.value)}
+        onChange={handleSetComment}
+      />
       <Button isDisabled={isSubmitting} onClick={handleSubmit}>
         쓰기
       </Button>
@@ -33,6 +41,25 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
 }
 
 function CommentList({ commentList }) {
+  const { id } = useSearchParams();
+
+  // const { id } = new URLSearchParams();
+
+  const toast = useToast();
+  const navigate = useNavigate();
+  function handleDelete() {
+    axios.delete("/api/comment/delete/" + commentList[0].id).then(() => {
+      toast({
+        description: "댓글이 삭제 되었습니다.",
+        status: "success",
+      });
+      navigate("/board/id/" + id);
+    });
+    // console.log(id);
+    // console.log(commentList);
+    // console.log(commentList[0].id);
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -46,9 +73,14 @@ function CommentList({ commentList }) {
                 <Heading size="xs">{comment.memberId}</Heading>
                 <Text fontSize="xs">{comment.inserted}</Text>
               </Flex>
-              <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
-                {comment.comment}
-              </Text>
+              <Flex justifyContent={"space-between"}>
+                <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
+                  {comment.comment}
+                </Text>
+                <Button onClick={handleDelete} size="sm">
+                  삭제
+                </Button>
+              </Flex>
             </Box>
           ))}
         </Stack>
@@ -59,6 +91,7 @@ function CommentList({ commentList }) {
 
 export function CommentContainer({ boardId }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [comment, setComment] = useState("");
 
   const [commentList, setCommentList] = useState([]);
 
@@ -81,12 +114,15 @@ export function CommentContainer({ boardId }) {
       .finally(() => setIsSubmitting(false));
   }
 
+  function handleComment() {}
+
   return (
     <Box>
       <CommentForm
         boardId={boardId}
         isSubmitting={isSubmitting}
         onSubmit={handleSubmit}
+        setCommentChange={handleComment}
       />
       <CommentList boardId={boardId} commentList={commentList} />
     </Box>
