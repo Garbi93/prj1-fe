@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { LoginContext } from "./LoginProvider";
 
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
@@ -44,7 +44,25 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
 }
 
 function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
+  const [comment, setComment] = useState("");
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const { hasAccess } = useContext(LoginContext);
+
+  const toast = useToast();
+
+  function handleEdit() {
+    axios
+      .put("/api/comment/edit", { id: comment.id, comment })
+      .then(() => {
+        toast({
+          description: "수정이 완료 되었습니다.",
+          status: "success",
+        });
+      })
+      .catch((error) => console.log("실패"))
+      .then(() => console.log("done"));
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -64,20 +82,49 @@ function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
                 </Text>
 
                 {hasAccess(comment.memberId) && (
-                  <Button
-                    isDisabled={isSubmitting}
-                    onClick={() => onDeleteModalOpen(comment.id)}
-                    size="xs"
-                    colorScheme="red"
-                  >
-                    <DeleteIcon />
-                  </Button>
+                  <>
+                    <Flex justifyContent="space-between" alignItems="center">
+                      <Button size="xs" colorScheme="blue" onClick={onOpen}>
+                        <EditIcon />
+                      </Button>
+                      <Button
+                        isDisabled={isSubmitting}
+                        onClick={() => onDeleteModalOpen(comment.id)}
+                        size="xs"
+                        colorScheme="red"
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Flex>
+                  </>
                 )}
               </Flex>
             </Box>
           ))}
         </Stack>
       </CardBody>
+
+      {/* 수정 모달 */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>수정 확인</ModalHeader>
+          <ModalCloseButton />
+          <Input
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <ModalBody>수정 하시겠습니까?</ModalBody>
+
+          <ModalFooter>
+            <Button onClick={onClose}>닫기</Button>
+            <Button onClick={handleEdit} colorScheme="blue">
+              수정
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Card>
   );
 }
