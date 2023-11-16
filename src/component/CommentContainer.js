@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, NotAllowedIcon } from "@chakra-ui/icons";
 import { LoginContext } from "./LoginProvider";
 
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
@@ -44,6 +44,9 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
 }
 
 function CommentItem({ comment, onDeleteModalOpen }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [commentEdited, setCommentEdited] = useState(comment.comment);
+
   const { hasAccess } = useContext(LoginContext);
   return (
     <Box>
@@ -52,18 +55,46 @@ function CommentItem({ comment, onDeleteModalOpen }) {
         <Text fontSize="xs">{comment.inserted}</Text>
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
-        <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
-          {comment.comment}
-        </Text>
+        <Box flex={1}>
+          <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
+            {comment.comment}
+          </Text>
+          {isEditing && (
+            <Textarea
+              value={commentEdited}
+              onChange={(e) => setCommentEdited(e.target.value)}
+            />
+          )}
+        </Box>
 
         {hasAccess(comment.memberId) && (
-          <Button
-            onClick={() => onDeleteModalOpen(comment.id)}
-            size="xs"
-            colorScheme="red"
-          >
-            <DeleteIcon />
-          </Button>
+          <Box>
+            {isEditing || (
+              <Button
+                size="xs"
+                colorScheme="purple"
+                onClick={() => setIsEditing(true)}
+              >
+                <EditIcon />
+              </Button>
+            )}
+            {isEditing && (
+              <Button
+                size="xs"
+                colorScheme="gray"
+                onClick={() => setIsEditing(false)}
+              >
+                <NotAllowedIcon />
+              </Button>
+            )}
+            <Button
+              onClick={() => onDeleteModalOpen(comment.id)}
+              size="xs"
+              colorScheme="red"
+            >
+              <DeleteIcon />
+            </Button>
+          </Box>
         )}
       </Flex>
     </Box>
