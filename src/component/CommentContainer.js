@@ -60,7 +60,11 @@ function CommentItem({
     setIsSubmitting(true);
 
     axios
-      .put("/api/comment/edit", { id: comment.id, comment: commentEdited })
+      .put("/api/comment/edit", {
+        id: comment.id,
+        comment: commentEdited,
+        nickName: comment.nickName,
+      })
       // 응답 코드에 따를 기능들
       .then(() => {
         toast({
@@ -94,7 +98,7 @@ function CommentItem({
   return (
     <Box>
       <Flex justifyContent="space-between">
-        <Heading size="xs">{comment.memberId}</Heading>
+        <Heading size="xs">닉네임 : {comment.nickName}</Heading>
         <Text fontSize="xs">{comment.inserted}</Text>
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
@@ -125,7 +129,10 @@ function CommentItem({
               <Button
                 size="xs"
                 colorScheme="purple"
-                onClick={() => setIsEditing(true)}
+                onClick={() => {
+                  setIsEditing(true);
+                  console.log(comment);
+                }}
               >
                 <EditIcon />
               </Button>
