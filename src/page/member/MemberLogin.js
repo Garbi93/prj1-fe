@@ -28,6 +28,7 @@ export function MemberLogin() {
           description: "로그인 되었습니다.",
           status: "info",
         });
+        navigate("/");
       })
       .catch(() => {
         toast({
