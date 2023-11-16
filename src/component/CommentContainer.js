@@ -57,12 +57,11 @@ function CommentItem({
   const { hasAccess } = useContext(LoginContext);
 
   function handleSubmit() {
-    // TODO : 응답 코드에 따를 기능들
-
     setIsSubmitting(true);
 
     axios
       .put("/api/comment/edit", { id: comment.id, comment: commentEdited })
+      // 응답 코드에 따를 기능들
       .then(() => {
         toast({
           description: "댓글 수정이 완료 되었습니다.",
