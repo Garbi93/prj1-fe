@@ -52,7 +52,7 @@ function CommentItem({ comment, onDeleteModalOpen }) {
   function handleSubmit() {
     axios
       .put("/api/comment/edit", { id: comment.id, comment: commentEdited })
-      .then(() => console.log("goot"))
+      .then(() => console.log("good"))
       .catch(() => console.log("bad"))
       .finally(() => console.log("done"));
   }
