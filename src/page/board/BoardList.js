@@ -139,7 +139,7 @@ export function BoardList() {
                   onClick={() => navigate("/board/" + board.id)}
                 >
                   <Td>{board.id}</Td>
-                  <Td>{board.countLike != 0 && board.countLike}</Td>
+                  <Td>{board.countLike !== 0 && board.countLike}</Td>
                   <Td>
                     {board.title}
                     {board.countComment > 0 && (

@@ -8,6 +8,7 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Image,
   Input,
   Modal,
   ModalBody,
@@ -17,7 +18,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
-  Text,
   Textarea,
   Tooltip,
   useDisclosure,
@@ -28,7 +28,6 @@ import { CommentContainer } from "../../component/CommentContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
-import * as PropTypes from "prop-types";
 
 function LikeContainer({ like, onClick }) {
   const { isAuthenticated } = useContext(LoginContext);
@@ -124,6 +123,14 @@ export function BoardView() {
         <FormLabel>본문</FormLabel>
         <Textarea value={board.content} readOnly />
       </FormControl>
+
+      {/* 이미지 출력 */}
+      {board.fileNames.map((name) => (
+        <Box my="5px" border="3px solid black">
+          <Image width="100%" src={name} />
+        </Box>
+      ))}
+
       <FormControl>
         <FormLabel>작성자</FormLabel>
         <Input value={board.nickName} readOnly />
