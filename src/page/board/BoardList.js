@@ -50,12 +50,9 @@ function Pagination({ pageInfo }) {
   return (
     <Box textAlign="center">
       {pageInfo.prevPageNumber && (
-        <Button
-          variant="ghost"
-          onClick={() => navigate("/?p=" + pageInfo.prevPageNumber)}
-        >
+        <PageButton variant="ghost" pageNumber={pageInfo.prevPageNumber}>
           <FontAwesomeIcon icon={faChevronLeft} />
-        </Button>
+        </PageButton>
       )}
 
       {pageNumbers.map((pageNumber) => (
@@ -70,12 +67,9 @@ function Pagination({ pageInfo }) {
         </PageButton>
       ))}
       {pageInfo.nextPageNumber && (
-        <Button
-          variant="ghost"
-          onClick={() => navigate("/?p=" + pageInfo.nextPageNumber)}
-        >
+        <PageButton variant="ghost" pageNumber={pageInfo.nextPageNumber}>
           <FontAwesomeIcon icon={faChevronRight} />
-        </Button>
+        </PageButton>
       )}
     </Box>
   );
