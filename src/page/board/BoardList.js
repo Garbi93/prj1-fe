@@ -21,6 +21,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faHeart,
+  faImage,
 } from "@fortawesome/free-solid-svg-icons";
 
 function PageButton({ variant, pageNumber, children }) {
@@ -146,6 +147,12 @@ export function BoardList() {
                       <Badge>
                         <ChatIcon />
                         {board.countComment}
+                      </Badge>
+                    )}
+                    {board.countFile > 0 && (
+                      <Badge>
+                        <FontAwesomeIcon icon={faImage} />
+                        {board.countFile}
                       </Badge>
                     )}
                   </Td>
