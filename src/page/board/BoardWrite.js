@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Center,
   FormControl,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
   Textarea,
   useToast,
@@ -56,40 +62,47 @@ export function BoardWrite() {
   }
 
   return (
-    <Box>
-      <h1>게시물 작성</h1>
-      <Box>
-        <FormControl>
-          <FormLabel>제목</FormLabel>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>본문</FormLabel>
-          <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></Textarea>
-        </FormControl>
-        <FormControl>
-          <FormLabel>이미지</FormLabel>
-          <Input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => setUploadFiles(e.target.files)}
-          />
-          <FormHelperText>
-            한 개 파일은 1MB 이내, 총 용량은 10MB 이내로 첨부하세요.
-          </FormHelperText>
-        </FormControl>
-        <Button
-          isDisabled={isSubmitting}
-          onClick={handleSubmit}
-          colorScheme="blue"
-        >
-          저장
-        </Button>
-      </Box>
-    </Box>
+    <Center>
+      <Card w={"lg"}>
+        <CardHeader>
+          <Heading>게시물 작성</Heading>
+        </CardHeader>
+        <CardBody>
+          <FormControl mb={5}>
+            <FormLabel>제목</FormLabel>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </FormControl>
+          <FormControl mb={5}>
+            <FormLabel>본문</FormLabel>
+            <Textarea
+              height={"sm"}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></Textarea>
+          </FormControl>
+          <FormControl mb={5}>
+            <FormLabel>이미지</FormLabel>
+            <Input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => setUploadFiles(e.target.files)}
+            />
+            <FormHelperText>
+              한 개 파일은 1MB 이내, 총 용량은 10MB 이내로 첨부하세요.
+            </FormHelperText>
+          </FormControl>
+        </CardBody>
+        <CardFooter>
+          <Button
+            isDisabled={isSubmitting}
+            onClick={handleSubmit}
+            colorScheme="blue"
+          >
+            저장
+          </Button>
+        </CardFooter>
+      </Card>
+    </Center>
   );
 }
