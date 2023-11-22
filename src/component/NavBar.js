@@ -1,4 +1,4 @@
-import { Button, Flex, useToast } from "@chakra-ui/react";
+import { Button, Flex, Spacer, useToast } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext, useEffect } from "react";
@@ -66,6 +66,7 @@ export function NavBar() {
           작성
         </Button>
       )}
+      <Spacer />
       {isAuthenticated() || (
         <Button
           borderRadius={0}
