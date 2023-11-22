@@ -25,6 +25,7 @@ import {
   faChevronRight,
   faHeart,
   faImage,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
 function PageButton({ variant, pageNumber, children }) {
@@ -96,15 +97,26 @@ function SearchComponent() {
   }
 
   return (
-    <Flex>
-      <Select defaultValue="all" onChange={(e) => setCategory(e.target.value)}>
-        <option value="all">전체</option>
-        <option value="title">제목</option>
-        <option value="content">본문</option>
-      </Select>
-      <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-      <Button onClick={handleSearch}>검색</Button>
-    </Flex>
+    <Center mt={5}>
+      <Flex gap={1}>
+        <Box>
+          <Select
+            defaultValue="all"
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="all">전체</option>
+            <option value="title">제목</option>
+            <option value="content">본문</option>
+          </Select>
+        </Box>
+        <Box>
+          <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+        </Box>
+        <Button onClick={handleSearch}>
+          <FontAwesomeIcon icon={faSearch} />
+        </Button>
+      </Flex>
+    </Center>
   );
 }
 
