@@ -96,6 +96,13 @@ function SearchComponent() {
     navigate("/?" + params);
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // 👇 Get input value
+      handleSearch();
+    }
+  };
+
   return (
     <Center mt={5}>
       <Flex gap={1}>
@@ -110,7 +117,11 @@ function SearchComponent() {
           </Select>
         </Box>
         <Box>
-          <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+          <Input
+            onKeyDown={handleKeyDown}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
         </Box>
         <Button onClick={handleSearch}>
           <FontAwesomeIcon icon={faSearch} />
