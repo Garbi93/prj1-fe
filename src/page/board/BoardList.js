@@ -139,8 +139,6 @@ export function BoardList() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(params.toString());
-
   useEffect(() => {
     axios.get("/api/board/list?" + params).then((response) => {
       setBoardList(response.data.boardList);
